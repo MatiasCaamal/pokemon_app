@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 //import 'package:pokemon_app/button.dart';
 import 'package:pokemon_app/characters/boy.dart';
+import 'package:pokemon_app/maps/pokelab.dart';
 //import 'package:pokemon_app/maps/littleroot.dart';
 import 'button.dart';
 //import 'characters/boy.dart';
@@ -37,6 +38,10 @@ class _HomePageState extends State<HomePage> {
   double mapX = 1.125;
   double mapY = 0.65;
 
+  // pokelab
+  double labMapX = 0;
+  double labMapY = 0;
+
   // boy character
   int boySpriteCount = 0;
   String boyDirection = 'Down';
@@ -60,6 +65,15 @@ class _HomePageState extends State<HomePage> {
           mapY += step;
         });
       }
+
+      if (double.parse((mapX).toStringAsFixed(4)) == 0.6250 &&
+          double.parse((mapY).toStringAsFixed(4)) == -1.1) {
+            setState(() {
+              currentLocation = 'pokelab';
+              labMapX = 0;
+              labMapY = -2.73;
+            });
+          }
     }
     animateWalk();
   }
@@ -166,6 +180,13 @@ class _HomePageState extends State<HomePage> {
                   LittleRoot(
                     x: mapX,
                     y: mapY,
+                    currentMap: currentLocation,
+                  ),
+
+                  // pokelab
+                  MyPokeLab(
+                    x: labMapX,
+                    y: labMapY,
                     currentMap: currentLocation,
                   ),
 
