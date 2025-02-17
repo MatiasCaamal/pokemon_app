@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 //import 'package:pokemon_app/button.dart';
-//import 'package:pokemon_app/characters/boy.dart';
+import 'package:pokemon_app/characters/boy.dart';
 //import 'package:pokemon_app/maps/littleroot.dart';
 import 'button.dart';
-import 'characters/boy.dart';
+//import 'characters/boy.dart';
 import 'maps/littleroot.dart';
 
 void main() {
@@ -46,35 +46,59 @@ class _HomePageState extends State<HomePage> {
 
   double step = 0.25;
 
+  // no mans land for little root
+  List<List<double>> noMansLandLittleroot = [
+    [0.625, 0.9],
+
+  ];
+
   void moveUp() {
     boyDirection = 'Up';
-    setState(() {
-      mapY += step;
-    });
+    if (currentLocation == 'littleroot') {
+      if (canMoveTo(boyDirection, noMansLandLittleroot, mapX, mapY)) {
+        setState(() {
+          mapY += step;
+        });
+      }
+    }
     animateWalk();
   }
 
   void moveDown() {
     boyDirection = 'Down';
-    setState(() {
-      mapY -= step;
-    });
+    if (currentLocation == 'littleroot') {
+      if (canMoveTo(boyDirection, noMansLandLittleroot, mapX, mapY)) {
+        setState(() {
+          mapY -= step;
+        });
+      }
+    }
     animateWalk();
   }
 
   void moveRight() {
     boyDirection = 'Right';
-    setState(() {
-      mapX += step;
-    });
+    if (currentLocation == 'littleroot') {
+      if (canMoveTo(boyDirection, noMansLandLittleroot, mapX, mapY)) {
+        setState(() {
+          mapX -= step;
+        });
+      }
+    }
     animateWalk();
   }
 
   void moveLeft() {
     boyDirection = 'Left';
-    setState(() {
-      mapX -= step;
-    });
+
+    if (currentLocation == 'littleroot') {
+      if (canMoveTo(boyDirection, noMansLandLittleroot, mapX, mapY)) {
+        setState(() {
+          mapX += step;
+        });
+      }
+    }
+
     animateWalk();
   }
 
@@ -82,6 +106,8 @@ class _HomePageState extends State<HomePage> {
   void pressedB() {}
 
   void animateWalk() {
+    print('x: ' + mapX.toString() + 'y: ' + mapY.toString());
+
     Timer.periodic(Duration(milliseconds: 50), (timer) {
       setState(() {
         boySpriteCount++;
@@ -92,6 +118,37 @@ class _HomePageState extends State<HomePage> {
         timer.cancel();
       }
     });
+  }
+
+  double cleanNum(double num) {
+    return double.parse(num.toStringAsExponential(4));
+  }
+
+  bool canMoveTo(String direction, var noMansLand, double x, double y) {
+    double stepX = 0;
+    double stepY = 0;
+
+    if (direction == 'Left') {
+      stepX = step;
+      stepY = 0;
+    } else if (direction == 'Right') {
+      stepX = -step;
+      stepY = 0;
+    } else if (direction == 'Up') {
+      stepX = 0;
+      stepY = step;
+    } else if (direction == 'Left') {
+      stepX = 0;
+      stepY = -step;
+    }
+
+    for (int i = 0; i < noMansLandLittleroot.length; i++) {
+      if ((cleanNum(noMansLand[i][0]) == cleanNum(x + stepX)) &&
+          (cleanNum(noMansLand[i][1]) == cleanNum(y + stepY))) {
+        return false;
+      }
+    }
+    return false;
   }
 
   @override

@@ -9,7 +9,7 @@ class LittleRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (currentMap == 'Littleroot') {
+    if (currentMap == 'littleroot') {
       return Container(
         alignment: Alignment(x, y),
         child: Image.asset(
